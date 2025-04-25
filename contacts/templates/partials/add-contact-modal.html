@@ -1,7 +1,10 @@
 <dialog id="contact_modal" class="modal">
     <div class="modal-box">
+
         <h3 class="font-bold text-lg mb-4">Add New Contact</h3>
-        <form method="post" class="mb-4">
+
+        <form hx-post="{% url 'create-contact' %}" hx-target="#contact-table-body" hx-swap="afterbegin"
+            hx-on:contact-success="contact_modal.close(); this.reset();" class="mb-4">
             {% csrf_token %}
 
             <div class="form-control w-full">
