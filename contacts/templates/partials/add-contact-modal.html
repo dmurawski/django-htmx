@@ -4,7 +4,7 @@
         <h3 class="font-bold text-lg mb-4">Add New Contact</h3>
 
         <form hx-post="{% url 'create-contact' %}" hx-target="#contact-table-body" hx-swap="afterbegin"
-            hx-on:contact-success="contact_modal.close(); this.reset();" class="mb-4">
+            hx-encoding="multipart/form-data" hx-on:contact-success="contact_modal.close(); this.reset();" class="mb-4">
             {% csrf_token %}
 
             <div class="form-control w-full">
@@ -31,6 +31,20 @@
                 {% if form.email.errors %}
                 <label class="label text-error">
                     {{ form.email.errors }}
+                </label>
+                {% endif %}
+            </div>
+
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text">Document</span>
+                </label>
+
+                {{ form.document }}
+
+                {% if form.document.errors %}
+                <label class="label text-error">
+                    {{ form.document.errors }}
                 </label>
                 {% endif %}
             </div>

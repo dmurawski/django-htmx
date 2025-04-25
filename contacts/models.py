@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import FileExtensionValidator
 from django.db import models
 
 
@@ -9,6 +10,12 @@ class User(AbstractUser):
 class Contact(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
+    document = models.FileField(
+        upload_to="contact_docs/",
+        validators=[FileExtensionValidator(["pdf", "doc", "docx", "txt"])],
+        blank=True,
+        null=True,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
         User,

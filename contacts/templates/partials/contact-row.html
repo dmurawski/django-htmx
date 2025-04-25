@@ -3,6 +3,13 @@
     <td>{{ contact.email }}</td>
     <td>{{ contact.created_at|date:"M d, Y" }}</td>
     <td>
+        {% if contact.document %}
+        <a href="{{ contact.document.url }}" class="btn btn-ghost btn-xs" target="_blank">Download Document</a>
+        {% else %}
+        <span class="text-red-500 mx-auto">No document</span>
+        {% endif %}
+    </td>
+    <td>
         <button class="btn btn-xs btn-error">
             Delete
         </button>
