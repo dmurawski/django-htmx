@@ -33,7 +33,7 @@ def search_contacts(request):
 @login_required
 @require_http_methods(["POST"])
 def create_contact(request):
-    form = ContactForm(request.POST)
+    form = ContactForm(request.POST, initial={"user": request.user})
     if form.is_valid():
         contact = form.save(commit=False)
         contact.user = request.user
@@ -41,4 +41,10 @@ def create_contact(request):
         context = {"contact": contact}
         response = render(request, "partials/contact-row.html", context)
         response["HX-Trigger"] = "contact-success"
+        return response
+    else:
+        response = render(request, "partials/add-contact-modal.html", {"form": form})
+        response["HX-Retarget"] = "#contact_modal"
+        response["HX-Reswap"] = "outerHTML"
+        response["HX-Trigger-After-Settle"] = "fail"
         return response

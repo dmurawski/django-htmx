@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
 from .models import Contact
 
@@ -21,6 +22,18 @@ class ContactForm(forms.ModelForm):
             }
         )
     )
+
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        if name.startswith("X"):
+            raise ValidationError("No names beginning with X!")
+        return name
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if Contact.objects.filter(user=self.initial.get("user"), email=email).exists():
+            raise ValidationError("You already have a contact with this email address.")
+        return email
 
     class Meta:
         model = Contact
